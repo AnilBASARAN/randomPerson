@@ -11,6 +11,8 @@ const UserList = () => {
   const [pageLoading, setPageLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState(''); // State for search query
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]); // State for filtered user list
+  const [currentPage, setCurrentPage] = useState(1); // State for current page
+  const [usersPerPage] = useState(10); // Set how many users to display per page
   const { userList } = useUser();
   const authToken = true; // for now TODO
 
@@ -26,12 +28,17 @@ const UserList = () => {
     if (userList?.results) {
       const filtered = userList.results.filter(user => 
         user.name.first.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        user.email.toLowerCase().includes(searchQuery.toLowerCase())||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.location.city.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredUsers(filtered);
     }
   }, [searchQuery, userList]);
+
+  // Calculate which users to show based on current page and users per page
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   // Row for the table
   const singleRow = (data: User) => {
@@ -77,6 +84,12 @@ const UserList = () => {
     return <PageLoading />;
   }
 
+  // Pagination Controls
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredUsers.length / usersPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
   return (
     <>
       {/* Search input */}
@@ -100,7 +113,7 @@ const UserList = () => {
       <Table1
         title='User List'
         tableId='user-list'
-        data={filteredUsers || []} // Use the filtered list for rendering
+        data={currentUsers || []} // Use the current users based on pagination
         headers={[
           { title: 'Id', width: '125px' },
           { title: 'First Name', width: '125px' },
@@ -111,6 +124,31 @@ const UserList = () => {
         ]}
         singleRow={singleRow}
       />
+
+      {/* Pagination controls */}
+      <div className="pagination mt-3 d-flex justify-content-center">
+        <button
+          className="btn btn-secondary me-2"
+          onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}
+        >
+          Previous
+        </button>
+        {pageNumbers.map(number => (
+          <button
+            key={number}
+            className={`btn btn-light me-2 ${currentPage === number ? 'active' : ''}`}
+            onClick={() => setCurrentPage(number)}
+          >
+            {number}
+          </button>
+        ))}
+        <button
+          className="btn btn-secondary ms-2"
+          onClick={() => setCurrentPage(currentPage < pageNumbers.length ? currentPage + 1 : pageNumbers.length)}
+        >
+          Next
+        </button>
+      </div>
     </>
   );
 };
