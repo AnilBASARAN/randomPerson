@@ -10,7 +10,7 @@ const HomePage = () => {
 
   // Fetch user list on component mount
   useEffect(() => {
-    if (!userList || userList.length === 0) {
+    if (!userList || userList?.results.length === 0) {
       getUserList(setPageLoading); // Pass setPageLoading to getUserList to handle loading state
     }
   }, [userList]); // Fetch only when the userList is empty or null
@@ -19,9 +19,9 @@ const HomePage = () => {
 
   return (
     <>
-      {pageLoading && (!userList || userList.length === 0) ? (
+      {pageLoading && (!userList || userList?.results.length === 0) ? (
         <LoadingSpinner />
-      ) : userList && userList.length ? (
+      ) : userList && userList?.results.length ? (
         <div className="relative min-h-screen text-white overflow-hidden">
           <div className="flex flex-col items-center justify-center z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <h1 className="text-center text-5xl sm:text-6xl font-bold text-emerald-400 mb-4">
@@ -31,7 +31,7 @@ const HomePage = () => {
               Discover the latest random Person
             </p>
 
-            <RandomUserList randomUsers={userList} />
+            <RandomUserList randomUsers={userList?.results} />
 
             <button
               onClick={() => getUserList(setPageLoading)} // Fetch new users when button is clicked
