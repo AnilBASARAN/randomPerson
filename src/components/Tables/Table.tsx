@@ -7,7 +7,7 @@ interface Table1Props {
   subtitle?: string
   hasToolbar?: boolean
   headers: {
-    title: string
+   title: React.ReactNode; // Allow JSX for interactive headers
     width?: string
   }[]
   data: any[]
