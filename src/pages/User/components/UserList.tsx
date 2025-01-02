@@ -12,7 +12,7 @@ const UserList = () => {
   const [searchQuery, setSearchQuery] = useState(''); // State for search query
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]); // State for filtered user list
   const [currentPage, setCurrentPage] = useState(1); // State for current page
-  const [usersPerPage] = useState(10); // Set how many users to display per page
+  const [usersPerPage] = useState(5); // Set how many users to display per page
   const { userList } = useUser();
   const authToken = true; // for now TODO
 
@@ -41,9 +41,9 @@ const UserList = () => {
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   // Row for the table
-  const singleRow = (data: User) => {
+  const singleRow = (data: User, index: number) => {
     return (
-      <tr key={data.id.value}>
+       <tr key={data.id.value || `user-${index}`}>
         <td
           className='text-gray-800 fw-bold fs-7 ps-4'
           style={{
