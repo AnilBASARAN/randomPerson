@@ -15,7 +15,7 @@ export const getUserList = async (
 ) => {
   setPageLoading(true);
   try {
-    const response = await api.get<UserList>("https://randomuser.me/api?results=25", {
+    const response = await api.get<UserList>("https://randomuser.me/api?results=40", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

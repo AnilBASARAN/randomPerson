@@ -9,7 +9,7 @@ export const useRandomStore = create((set) => ({
   getRandomUsers: async () => { // Accept a `random` parameter
     set({ isRandomUsersLoading: true });
     try {
-      const res = await axios.get(`https://randomuser.me/api?results=5`);
+      const res = await axios.get(`https://randomuser.me/api?results=50`);
       set({ randomUsers: res.data.results });
     } catch (error) {
       toast.error(

@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './App.css';
+import './index.css';
 
 // Import Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap import here
